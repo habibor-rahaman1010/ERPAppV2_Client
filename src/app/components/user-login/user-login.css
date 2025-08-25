@@ -1,0 +1,14 @@
+#userLoginForm{
+  border: 1px solid gray;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+
+#userLoginForm input{
+  padding: 6px;
+}
+
+.userInput{
+    margin: 10px;
+}
