@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth';
-import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../models/user';
 
 @Component({
@@ -11,25 +11,26 @@ import { User } from '../../models/user';
   styleUrl: './user-reactive-from.css',
   providers: [AuthService],
 })
+
 export class UserReactiveFrom {
+  constructor(private authService: AuthService) { }
+
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', [Validators.required])
   });
 
-  constructor(private authService: AuthService) {}
-
   user: User = {
-      username: '',
-      password: ''
-    }
+    username: '',
+    password: ''
+  }
 
-  
-  onSubmit() {  
+
+  onSubmit() {
     if (this.loginForm.invalid) return;
 
-    const formData = this.loginForm.value; 
-    
+    const formData = this.loginForm.value;
+    this.user = { ...formData } as User;
 
     this.authService.userLogin(this.user).subscribe((response: any) => {
       if (response) {
