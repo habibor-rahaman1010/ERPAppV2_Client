@@ -1,0 +1,94 @@
+/* Main login section setup */
+.login-section {
+    max-width: 1290px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 100px;
+    box-sizing: border-box;
+    justify-content: center;
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 20px;
+}
+
+/* Left side image */
+.login-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Right side form */
+.user-form {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.user-form div img {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 120px;
+}
+
+/* Form styling */
+.reactive-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.reactive-form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.reactive-form input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    padding: 12px;
+    background-color: teal;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover {
+    background-color: rgb(0, 98, 98);
+}
+
+@media (max-width: 768px) {
+    .login-section {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .user-form {
+        max-width: 100%;
+    }
+}
