@@ -11,3 +11,7 @@
 .p-ripple.p-tree-node-toggle-button {
     color: whitesmoke;
 }
+
+.p-tree-node-content.p-tree-node-selectable:not(.p-tree-node-selected):hover {
+    background: rgb(0, 80, 55) !important;
+}
