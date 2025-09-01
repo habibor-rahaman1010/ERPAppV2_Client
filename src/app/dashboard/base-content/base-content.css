@@ -1,0 +1,10 @@
+body {
+    font-family: 'Inter', sans-serif;
+    @apply bg-gray-100 min-h-screen flex flex-col;
+}
+
+.p-component.p-tree {
+    background: none;
+    display: inline;
+    padding: 0;
+}

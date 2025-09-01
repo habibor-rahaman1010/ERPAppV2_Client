@@ -1,0 +1,82 @@
+<div class="flex flex-col min-h-screen">
+    <header class="bg-green-500 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center">
+            <!-- This label acts as the hamburger button, it will toggle the hidden checkbox -->
+            <label for="sidebar-toggle"
+                class="md:hidden p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white rounded-md mr-2 cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </label>
+            <img class="hidden md:inline-block md:w-10 md:mr-2" src="assets/logo.png" alt="">
+            <h1 class="text-xl font-bold">Maliha ERP</h1>
+        </div>
+
+        <div class="relative inline-block text-left">
+            <!-- Hidden Checkbox -->
+            <input type="checkbox" id="userMenuToggle" class="peer hidden" />
+
+            <!-- Button -->
+            <label for="userMenuToggle"
+                class="flex items-center space-x-2 bg-gray-800 text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700">
+                <span><i class="fa-solid fa-user mr-1"></i> Hello, User</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </label>
+
+            <!-- Dropdown -->
+            <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg ring-1 ring-black ring-opacity-5 scale-95 opacity-0 
+              transition-all duration-200 origin-top peer-checked:opacity-100 peer-checked:scale-100">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa-solid fa-gear"></i>
+                    Change Password</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex flex-1 overflow-hidden">
+        <!-- We use a hidden checkbox to toggle the sidebar state -->
+        <!-- The 'peer' class on this input is key to the CSS-only toggle logic -->
+        <input type="checkbox" id="sidebar-toggle" class="peer hidden" />
+
+        <!-- Sidebar - now responsive without JS -->
+        <!-- The peer-checked:~ sibling selector is used here to show the sidebar when the checkbox is checked -->
+        <aside
+            class="bg-green-700 text-white w-100 p-4 flex flex-col overflow-y-auto transform -translate-x-full peer-checked:translate-x-0 md:transform-none fixed inset-y-0 z-50 md:relative md:flex transition-transform duration-300 ease-in-out">
+
+            <h2 (click)="menueRefresh()" class="text-lg font-semibold mb-4 bg-cyan-500 p-1 cursor-pointer rounded"><i
+                    class="fa-solid fa-arrows-rotate ml-1"></i>
+                Refres Menues</h2>
+
+            <nav class="space-y-2">
+                <div class="md:h-screen md:overflow-auto">
+                    <p-tree class="custom-tree" [value]="treeManuesData" selectionMode="single"
+                        (onNodeSelect)="onNodeSelect($event)"></p-tree>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Sidebar overlay for mobile -->
+        <!-- This label will cover the main content area and close the sidebar when clicked -->
+        <label for="sidebar-toggle"
+            class="fixed inset-0 bg-black opacity-0 md:hidden transition-opacity duration-300 ease-in-out pointer-events-none peer-checked:opacity-50 peer-checked:pointer-events-auto"></label>
+
+        <!-- Main Content Panel -->
+        <div class="flex-1 p-6 overflow-y-auto">
+            <!-- Dashboard body content would here -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Content</h2>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 text-center p-4 text-gray-600 mt-auto">
+        <p>Copyright &copy; <a class="text-blue-800" href="https://malihapolytex.com/" target="_blank"> 2021 Maliha
+                Trade Limited.</a></p>
+    </footer>
+</div>

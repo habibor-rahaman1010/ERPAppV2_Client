@@ -1,0 +1,13 @@
+@import "primeicons/primeicons.css";
+
+.p-tree-node-label {
+    color: whitesmoke;
+}
+
+.p-tree-node-icon {
+    color: whitesmoke !important;
+}
+
+.p-ripple.p-tree-node-toggle-button {
+    color: whitesmoke;
+}
