@@ -46,9 +46,6 @@ export class Login implements OnInit {
       this.authService.userLogin(this.user).subscribe({
         next: (response: any) => {
           if (response && response.token) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('userMenues', JSON.stringify(response.menuDetails));
-
             this.messageService.add({
               severity: 'success',
               summary: 'Login Successful',

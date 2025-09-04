@@ -30,9 +30,10 @@
             <!-- Dropdown -->
             <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg ring-1 ring-black ring-opacity-5 scale-95 opacity-0 
               transition-all duration-200 origin-top peer-checked:opacity-100 peer-checked:scale-100">
-                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa-solid fa-gear"></i>
+                <a class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"><i
+                        class="fa-solid fa-gear"></i>
                     Change Password</a>
-                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i
+                <a (click)="logoutUser()" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"><i
                         class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
             </div>
         </div>
