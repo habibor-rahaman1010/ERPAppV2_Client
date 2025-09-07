@@ -1,35 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user';
-import { Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiURI = 'http://localhost:7297/api/Auth/login';
-  constructor(private http: HttpClient) { }
+  private apiURI = 'http://localhost:7297/api/Auth';
+  constructor(private http: HttpClient, private router: Router) { }
 
   userLogin(user: User): Observable<any> {
-    return this.http.post<any>(this.apiURI, user).pipe(
+    return this.http.post<any>(`${this.apiURI}/login`, user, { withCredentials: true }).pipe(
       tap((response) => {
-        if (response && response.token) {
-          localStorage.setItem('token', response.token);
+        if (response) {
           localStorage.setItem('userMenues', JSON.stringify(response.menuDetails));
         }
       })
     )
   }
 
-  logout() {
-    localStorage.removeItem('token');
+  isLoggedIn(): Observable<boolean | 401> {
+    return this.http.get<{ loggedIn: boolean }>(`${this.apiURI}/isLoggedIn`, { withCredentials: true }).pipe(
+      map(res => res.loggedIn),
+      catchError(() => of(false))
+    );
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  logout(): Observable<any> {
+    return this.http.post<any>(`${this.apiURI}/logout`, {}, { withCredentials: true })
+      .pipe(tap(() => localStorage.removeItem("userMenues")))
   }
 }

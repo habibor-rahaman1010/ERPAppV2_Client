@@ -45,7 +45,7 @@ export class Login implements OnInit {
 
       this.authService.userLogin(this.user).subscribe({
         next: (response: any) => {
-          if (response && response.token) {
+          if (response) {
             this.messageService.add({
               severity: 'success',
               summary: 'Login Successful',
