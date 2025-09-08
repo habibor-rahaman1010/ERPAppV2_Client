@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/authServices/auth';
 import { TreeModule, TreeNodeSelectEvent } from 'primeng/tree';
-import { TreeNode } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ChildMenu, Menu, ParentMenu } from '../../../interfaces/parentMenu';
@@ -19,7 +19,7 @@ import { ChildMenu, Menu, ParentMenu } from '../../../interfaces/parentMenu';
 
 export class BaseContent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
 
   manuesData: ParentMenu[] = [];
   treeManuesData: TreeNode[] = [];
@@ -77,8 +77,26 @@ export class BaseContent implements OnInit {
   }
 
   logoutUser() {
-    this.authService.logout();
-    this.router.navigate(['/'])
+    this.authService.logout().subscribe(
+      {
+        next: (response: any) => {
+          if (response) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Logout Successful',
+              detail: `User logout has been successfully!`
+            });
+            this.router.navigate(['/']);
+          } else {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Logout Failed',
+              detail: 'Invalid response from server. Please try again.'
+            });
+          }
+        }
+      }
+    );
   }
 
   menueRefresh() {
