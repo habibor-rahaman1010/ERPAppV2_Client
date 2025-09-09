@@ -52,7 +52,7 @@ export class Login implements OnInit {
               detail: `Welcome back, ${this.user.username}!`
             });
 
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/modules']);
           } else {
             this.messageService.add({
               severity: 'warn',

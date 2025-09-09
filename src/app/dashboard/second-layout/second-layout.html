@@ -1,0 +1,47 @@
+<div class="flex flex-col min-h-screen">
+    <header class="bg-green-500 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center">
+            <img class="w-10 mr-2" src="assets/logo.png" alt="">
+            <h1 class="text-xl font-bold">Maliha ERP</h1>
+        </div>
+
+        <div class="relative inline-block text-left">
+            <!-- Hidden Checkbox -->
+            <input type="checkbox" id="userMenuToggle" class="peer hidden" />
+
+            <!-- Button -->
+            <label for="userMenuToggle"
+                class="flex items-center space-x-2 bg-gray-800 text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700">
+                <span><i class="fa-solid fa-user mr-1"></i> Hello, User</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </label>
+
+            <!-- Dropdown -->
+            <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg ring-1 ring-black ring-opacity-5 scale-95 opacity-0 
+              transition-all duration-200 origin-top peer-checked:opacity-100 peer-checked:scale-100">
+                <a class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"><i
+                        class="fa-solid fa-gear"></i>
+                    Change Password</a>
+                <a (click)="logoutUser()" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex flex-1 overflow-hidden">
+        <div class="flex-1 p-6 overflow-y-auto">
+            <!-- Dashboard body content would here -->
+            <ng-content> </ng-content>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 text-center p-4 text-gray-600 mt-auto">
+        <p>Copyright &copy; <a class="text-blue-800" href="https://malihapolytex.com/" target="_blank"> 2025 Maliha
+                Software Team.</a></p>
+    </footer>
+</div>
