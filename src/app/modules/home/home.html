@@ -1,6 +1,17 @@
 <app-second-layout>
     <div class="container mx-auto p-10">
+
         <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+
+            <p-button *ngFor="let module of userModules" [label]="module.moduleName"
+                [icon]="module.moduleLogo??'pi pi-shopping-cart'"
+                [styleClass]="'w-full h-32 text-lg ' + module.styleClass" routerLink="/dashboard"
+                [queryParams]="{ moduleId: module.id }">
+            </p-button>
+        </div>
+
+
+        <!-- <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
             <p-button label="Purchase Module" icon="pi pi-shopping-cart"
                 styleClass="w-full h-32 text-lg btn-1"></p-button>
             <p-button label="Sales Module" icon="pi pi-dollar" styleClass="w-full h-32 text-lg btn-2"></p-button>
@@ -13,6 +24,7 @@
             <p-button label="Management Module" icon="pi pi-users" styleClass="w-full h-32 text-lg btn-8"></p-button>
             <p-button label="User Management Module" icon="pi pi-user-edit"
                 styleClass="w-full h-32 text-lg btn-9"></p-button>
-        </div>
+        </div> -->
+
     </div>
 </app-second-layout>

@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/authServices/auth';
 import { TreeModule, TreeNodeSelectEvent } from 'primeng/tree';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import { ChildMenu, Menu, ParentMenu } from '../../../interfaces/parentMenu';
+import { Menu, ParentMenu } from '../../../interfaces/parentMenu';
 
 
 @Component({
@@ -19,13 +19,17 @@ import { ChildMenu, Menu, ParentMenu } from '../../../interfaces/parentMenu';
 
 export class BaseContent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
+  constructor(private authService: AuthService, private router: Router, private messageService: MessageService, private route: ActivatedRoute) { }
 
   manuesData: ParentMenu[] = [];
   treeManuesData: TreeNode[] = [];
+  moduleId: string | number | null = null;
 
   ngOnInit(): void {
-    const data = localStorage.getItem('userMenues');
+    this.route.queryParamMap.subscribe(params => {
+      this.moduleId = Number(params.get('moduleId'));
+    })
+    const data = localStorage.getItem('userModules');
     if (data) {
       this.manuesData = JSON.parse(data);
       this.treeManuesData = this.transformDataToTreeNodes(this.manuesData);
@@ -34,21 +38,38 @@ export class BaseContent implements OnInit {
   }
 
   transformDataToTreeNodes(parentMenusData: ParentMenu[]): TreeNode[] {
-    return parentMenusData.map(parent => {
-      // Each parent can have multiple menus
-      const menuNodes: TreeNode[] = parent.menus.map((menu: Menu) => {
-        const childNodes: TreeNode[] = menu.childMenus?.map((child: ChildMenu) => ({
+    const menuMap: Record<string, Menu[]> = {};
+
+    // Flatten all modules menus into one grouped by menuName
+    parentMenusData.forEach(module => {
+      if (module.id === this.moduleId) {
+        module.menus.forEach(menu => {
+          if (!menuMap[menu.menuName]) {
+            menuMap[menu.menuName] = [];
+          }
+          menuMap[menu.menuName].push(menu);
+        });
+      }
+    });
+
+    // Build TreeNodes
+    return Object.keys(menuMap).map(menuName => {
+      const menus = menuMap[menuName];
+
+      // sub-parent nodes (subMenuName)
+      const subMenuNodes: TreeNode[] = menus.map(menu => {
+        const childNodes: TreeNode[] = menu.childMenus?.map(child => ({
           key: `${menu.menuId}-${child.childId}`,
           label: child.childName,
           data: child.uiLink,
           icon: 'pi pi-fw pi-file',
-          selectable: !!child.uiLink // only selectable if uiLink exists
+          selectable: !!child.uiLink
         })) || [];
 
         return {
           key: menu.menuId.toString(),
           label: menu.subMenuName || menu.menuName,
-          data: menu.uiLink,
+          data: null,
           icon: 'pi pi-fw pi-folder',
           selectable: false,
           children: childNodes
@@ -56,12 +77,12 @@ export class BaseContent implements OnInit {
       });
 
       return {
-        key: parent.menuName, // or parent.menuId if you prefer
-        label: parent.menuName,
+        key: menuName, // top-level menuName
+        label: menuName,
         data: null,
         icon: 'pi pi-fw pi-folder',
         selectable: false,
-        children: menuNodes
+        children: subMenuNodes
       } as TreeNode;
     });
   }
@@ -101,6 +122,8 @@ export class BaseContent implements OnInit {
 
   menueRefresh() {
     console.log('hello programmer!');
+
+
     // in futucher we will develop the feature as son as posible...
   }
 }

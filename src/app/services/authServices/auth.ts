@@ -15,7 +15,8 @@ export class AuthService {
     return this.http.post<any>(`${this.apiURI}/login`, user, { withCredentials: true }).pipe(
       tap((response) => {
         if (response) {
-          localStorage.setItem('userMenues', JSON.stringify(response.menuDetails));
+          console.log(response);
+          localStorage.setItem('userModules', JSON.stringify(response.userModules));
         }
       })
     )

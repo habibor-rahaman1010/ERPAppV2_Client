@@ -1,12 +1,7 @@
-export interface ChildMenu {
-    childId: number;
-    childName: string;
-    uiLink: string | null;
-    isActive: boolean;
-    ysnParent: boolean;
-    orderBy: number;
-    makeDate: string;
-    menuLogo: string | null;
+export interface ParentMenu {
+    id: number,
+    menuName: string;
+    menus: Menu[];
 }
 
 export interface Menu {
@@ -22,7 +17,13 @@ export interface Menu {
     childMenus?: ChildMenu[];
 }
 
-export interface ParentMenu {
-    menuName: string;
-    menus: Menu[];
+export interface ChildMenu {
+    childId: number;
+    childName: string;
+    uiLink: string | null;
+    isActive: boolean;
+    ysnParent: boolean;
+    orderBy: number;
+    makeDate: string;
+    menuLogo: string | null;
 }
