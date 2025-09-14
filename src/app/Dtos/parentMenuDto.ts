@@ -1,12 +1,12 @@
-export interface ParentMenu {
+export type ParentMenu = {
     id: number,
-    menuName: string;
+    parentMenuName: string;
     menus: Menu[];
 }
 
-export interface Menu {
+export type Menu = {
     menuId: number;
-    menuName: string;
+    parentMenuName: string;
     subMenuName?: string;
     uiLink: string | null;
     isActive: boolean;
@@ -17,7 +17,7 @@ export interface Menu {
     childMenus?: ChildMenu[];
 }
 
-export interface ChildMenu {
+export type ChildMenu = {
     childId: number;
     childName: string;
     uiLink: string | null;

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/authServices/auth';
 import { TreeModule, TreeNodeSelectEvent } from 'primeng/tree';
 import { MessageService, TreeNode } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import { Menu, ParentMenu } from '../../../interfaces/parentMenu';
+import { Menu } from '../../Dtos/parentMenuDto';
+import { UserModule } from '../../Dtos/userResponseDto';
 
 
 @Component({
@@ -19,44 +20,42 @@ import { Menu, ParentMenu } from '../../../interfaces/parentMenu';
 
 export class BaseContent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private messageService: MessageService, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService,
+    private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) { }
 
-  manuesData: ParentMenu[] = [];
+  userModules: UserModule[] = [];
   treeManuesData: TreeNode[] = [];
   moduleId: string | number | null = null;
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       this.moduleId = Number(params.get('moduleId'));
-    })
-    const data = localStorage.getItem('userModules');
-    if (data) {
-      this.manuesData = JSON.parse(data);
-      this.treeManuesData = this.transformDataToTreeNodes(this.manuesData);
-      console.log("Transformed Tree Node Data:", this.treeManuesData);
-    }
+    });
+
+    this.authService.userModules.subscribe(modules => {
+      this.userModules = modules;
+      this.treeManuesData = this.transformDataToTreeNodes(this.userModules);
+    });
   }
 
-  transformDataToTreeNodes(parentMenusData: ParentMenu[]): TreeNode[] {
+  transformDataToTreeNodes(userModulesData: UserModule[]): TreeNode[] {
     const menuMap: Record<string, Menu[]> = {};
 
-    // Flatten all modules menus into one grouped by menuName
-    parentMenusData.forEach(module => {
+    userModulesData.forEach(module => {
       if (module.id === this.moduleId) {
         module.menus.forEach(menu => {
-          if (!menuMap[menu.menuName]) {
-            menuMap[menu.menuName] = [];
+          if (!menuMap[menu.parentMenuName]) {
+            menuMap[menu.parentMenuName] = [];
           }
-          menuMap[menu.menuName].push(menu);
+          menuMap[menu.parentMenuName].push(menu);
         });
       }
     });
 
-    // Build TreeNodes
     return Object.keys(menuMap).map(menuName => {
       const menus = menuMap[menuName];
-
-      // sub-parent nodes (subMenuName)
       const subMenuNodes: TreeNode[] = menus.map(menu => {
         const childNodes: TreeNode[] = menu.childMenus?.map(child => ({
           key: `${menu.menuId}-${child.childId}`,
@@ -68,7 +67,7 @@ export class BaseContent implements OnInit {
 
         return {
           key: menu.menuId.toString(),
-          label: menu.subMenuName || menu.menuName,
+          label: menu.subMenuName || menu.parentMenuName,
           data: null,
           icon: 'pi pi-fw pi-folder',
           selectable: false,
@@ -77,7 +76,7 @@ export class BaseContent implements OnInit {
       });
 
       return {
-        key: menuName, // top-level menuName
+        key: menuName,
         label: menuName,
         data: null,
         icon: 'pi pi-fw pi-folder',
@@ -91,9 +90,6 @@ export class BaseContent implements OnInit {
     const uiLink = event.node.data;
     if (uiLink) {
       this.router.navigate([uiLink]);
-      console.log(`Navigating to: ${uiLink}`);
-    } else {
-      console.log(`Parent node selected: ${event.node.label}`);
     }
   }
 
@@ -121,9 +117,12 @@ export class BaseContent implements OnInit {
   }
 
   menueRefresh() {
-    console.log('hello programmer!');
-
-
-    // in futucher we will develop the feature as son as posible...
+    this.authService.userMenueRefresh().subscribe(data => {
+      if (data) {
+        const treeData = this.transformDataToTreeNodes(data);
+        this.treeManuesData = [...treeData];
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 }

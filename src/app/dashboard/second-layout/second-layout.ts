@@ -16,7 +16,7 @@ export class SecondLayout {
   logoutUser() {
     this.authService.logout().subscribe(
       {
-        next: (response: any) => {
+        next: (response: boolean) => {
           if (response) {
             this.messageService.add({
               severity: 'success',
